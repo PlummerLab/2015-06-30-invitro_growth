@@ -1,0 +1,45 @@
+Tab delimited file of the measurements output from [ImageJ](http://imagej.net/).
+
+First I started with all of the jpegs in this folder.
+
+Because for two of the days I scanned at 1600 dpi I need to downsize those images so that I don't get any inconsistencies with measurements due to resolution.
+In bash i ran the following.
+
+```bash
+for file in 2015-08-29-*.jpg; do
+	convert -units PixelsPerInch $file -resample 600 $file".resampled.jpg";
+done
+for file in 2015-08-02-*.jpg; do
+	convert -units PixelsPerInch $file -resample 600 $file".resampled.jpg";
+done
+```
+
+Then I opened ImageJ and worked through each image (.jpg or resampled.jpg) indiviually.
+
+I took a line tool and measured out 3 cm on the ruler at the top of that scan.
+Then i selected 'Analyse>Set Scale...' and set the scale appropriately using mm units.
+I selected the 'set global' tickbox so that I didn't have to to this for every image.
+I redet the scale once for every day of measurements or when the dpi of the image changed (some where 600, others were 1600).
+
+Then I converted them to 8-Bit grayscale images and ran the 'Process>Binary>Make Binary' command to convert them to a 2 colour (black/white image).
+I selected around the fungal growth (excluding any contaminants where possible) and cleared outside of that. I then saved this processed image to a new .tif file.
+
+When all of the images had been processed in this way, I selected 'Analyse>Set Measurements' and had the following boxes selected:
+	- Area
+	- Perimeter
+	- Feret's diameter
+	- Scientific notation
+	- Display label
+	Redirect to: None
+	Decimal places (0-9): 3
+
+I modified one of the built in Macros to process all images with 'Analyze>Analyze Particles...' (provided in this directory).
+
+I installed the macro with 'Plugins>Macros>Install...' and navigated to BatchAnalyzeParticles.txt.
+I then selected 'Plugins>Macros>BatchAnalyzeParticles' and selected the folder containing the images in the popup window.
+I saved the Results as: ImageJ_measurements_of_processed_images.csv
+
+I used ImageJ 1.48e to perform this analysis with Java 1.8.0_51 (64-bit).
+
+
+Done
